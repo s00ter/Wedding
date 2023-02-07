@@ -1,0 +1,11 @@
+﻿@using Wedding.DAL.Data.Entities
+@model List<City>
+
+    <div>
+    @foreach(var city in Model)
+    {
+        <p>
+            @city.Name
+        </p>
+    }
+</div>
