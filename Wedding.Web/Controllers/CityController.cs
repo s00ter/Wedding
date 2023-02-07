@@ -15,7 +15,7 @@ namespace Wedding.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCityes()
+        public async Task<IActionResult> GetCities()
         {
             var items = await _cityRepository.GetAllAsync();
 
