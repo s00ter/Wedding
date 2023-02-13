@@ -17,28 +17,28 @@ namespace Wedding.DAL.Repository
 
         protected abstract IQueryable<TEntity> IncludeChildrens(IQueryable<TEntity> query);
 
-        protected WeddingContext WeddingContext;
+        protected WeddingContext Context;
 
         protected BaseRepository(WeddingContext weddingContext)
         {
-            WeddingContext = weddingContext;
+            Context = weddingContext;
         }
 
         public async Task Create(TEntity entity)
         {
-            WeddingContext.Add(entity);
-            await WeddingContext.SaveChangesAsync();
+            Context.Add(entity);
+            await Context.SaveChangesAsync();
         }
 
         public async Task Delete(TEntity entity)
         {
-            WeddingContext.Remove(entity);
-            await WeddingContext.SaveChangesAsync();
+            Context.Remove(entity);
+            await Context.SaveChangesAsync();
         }
 
         public async Task<List<TEntity>> GetAllAsync()
         {
-            var showAll = WeddingContext.Set<TEntity>().AsQueryable();
+            var showAll = Context.Set<TEntity>().AsQueryable();
 
             showAll = IncludeChildrens(showAll);
 
@@ -47,14 +47,14 @@ namespace Wedding.DAL.Repository
 
         public async Task<TEntity> GetByIdAsync(TId id)
         {
-            var showOne = WeddingContext.Set<TEntity>();
+            var showOne = Context.Set<TEntity>();
             return await showOne.FirstOrDefaultAsync(GetByIdExpression(id));
         }
 
         public async Task<TEntity> Update(TEntity entity)
         {
-            WeddingContext.Update(entity);
-            await WeddingContext.SaveChangesAsync();
+            Context.Update(entity);
+            await Context.SaveChangesAsync();
 
             return entity;
         }

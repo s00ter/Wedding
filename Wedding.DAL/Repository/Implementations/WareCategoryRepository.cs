@@ -17,6 +17,25 @@ namespace Wedding.DAL.Repository.Implementations
         {
         }
 
+        public async Task<(int Total, List<Ware> Wares)> GetWaresByFilter
+            (int skip, int take, Guid categoryId, int? priceFrom, int? priceTo, string search)
+        {
+            var query = Context.Wares
+                .Where(w => w.CategoryId == categoryId
+                        && (priceFrom.HasValue && priceFrom >= w.RetailPrice)
+                        && (priceTo.HasValue && priceTo <= w.RetailPrice)
+                        && (search != null && w.Name.ToLower().Contains(search.ToLower())));
+
+            var total = await query.CountAsync();
+
+            var result = await query
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+
+            return (total, result);
+        }
+
         protected override Expression<Func<WareCategory, bool>> GetByIdExpression(Guid id)
         {
             return c => c.Id == id;
