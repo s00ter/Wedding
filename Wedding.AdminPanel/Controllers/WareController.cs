@@ -8,8 +8,11 @@ namespace Wedding.AdminPanel.Controllers
 {
     public class WareController : ReadWriteControllerBase<Ware, Guid, IWareRepository>
     {
-        public WareController(IWareRepository repository) : base(repository)
+        private readonly IWareCategoryRepository _wareCategoryRepository;
+
+        public WareController(IWareRepository repository, IWareCategoryRepository wareCategoryRepository) : base(repository)
         {
+            _wareCategoryRepository = wareCategoryRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -20,8 +23,12 @@ namespace Wedding.AdminPanel.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var categories = await _wareCategoryRepository.GetAllAsync();
+
+            ViewBag.Categories = categories;
+
             return PartialView();
         }
 
@@ -34,7 +41,8 @@ namespace Wedding.AdminPanel.Controllers
                 RetailPrice = body.RetailPrice,
                 Price = body.Price,
                 Discounted = body.Discounted,
-                Description = body.Description
+                Description = body.Description,
+                CategoryId = body.CategoryId
             };
 
             await Repository.Create(ware);

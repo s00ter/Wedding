@@ -5,7 +5,7 @@
       <div class="modal-body">
         <div class="mb-3">
             <label class="form-label">Наименование</label>
-            <input type="email" class="form-control" id="wareNameInput">
+            <input class="form-control" id="wareNameInput">
 
             <label class="form-label">Розничная цена</label>
             <input type="number" class="form-control" id="wareRetailPriceInput">
@@ -19,8 +19,15 @@
             </div>
 
             <label class="form-label">Описание</label>
-            <input type="email" class="form-control" id="wareDescriptionInput">
+            <input class="form-control" id="wareDescriptionInput">
             
+            <label class="form-label">Категория</label>
+            <select class="form-select" id="wareCategorySelect">
+                @foreach(var category in ViewBag.Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+            </select>
           </div>
       </div>
       <div class="modal-footer">
@@ -40,10 +47,14 @@
               const warePrice = Number($("#warePriceInput").val())
               const wareDiscounted = $("#wareDiscountedInput").val() === 'on'
               const wareDescription = $("#wareDescriptionInput").val()
+              const wareCategoryId = $('#wareCategorySelect option:selected').val()
+
+              console.log($("#wareDiscountedInput").val())
+
               $.ajax({
                type: 'POST',
                url: '/Ware/Create',
-               data: '{"Name":"' + wareName + '","RetailPrice": ' + wareRetailPrice + ' ,"Price": ' + warePrice + ' ,"Discounted": ' + wareDiscounted + ' ,"Description":"' + wareDescription + '"}',
+               data: '{"Name":"' + wareName + '", "CategoryId": "' + wareCategoryId + '", "RetailPrice": ' + wareRetailPrice + ' ,"Price": ' + warePrice + ' ,"Discounted": ' + wareDiscounted + ' ,"Description":"' + wareDescription + '"}',
                success: function() {
                    $("#addWareModal").hide()
                 },
