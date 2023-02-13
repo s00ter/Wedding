@@ -1,0 +1,37 @@
+﻿<div class="modal-header">
+        <h5 class="modal-title">Добавление</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+            <label class="form-label">Наименование</label>
+            <input type="email" class="form-control" id="wareCategoryNameInput">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onWareCategoryAddModalClose()">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="onWareCategoryAddModalConfirm()">Добавить</button>
+      </div>
+
+      <script>
+          const onWareCategoryAddModalClose = () => {
+              $("#addWareCategoryModal").hide()
+          }
+
+          const onWareCategoryAddModalConfirm = () => {
+
+              const wareCategoryName = $("#wareCategoryNameInput").val()
+
+              $.ajax({
+               type: 'POST',
+               url: '/WareCategory/Create',
+               data: '{"Name":"' + wareCategoryName + '"}',
+               success: function() {
+                   $("#addWareCategoryModal").hide()
+                },
+               contentType: "application/json",
+               dataType: 'json'
+           })
+              
+          }
+      </script>

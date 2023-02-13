@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Wedding.AdminPanel.Controllers.Abstractions;
-using Wedding.AdminPanel.Models.City;
+using Wedding.AdminPanel.Models.WareCategory;
 using Wedding.DAL.Data.Entities;
 using Wedding.DAL.Repository.Abstractions;
 
 namespace Wedding.AdminPanel.Controllers
 {
-    public class CityController : ReadWriteControllerBase<City, int, ICityRepository>
+    public class WareCategoryController : ReadWriteControllerBase<WareCategory, Guid, IWareCategoryRepository>
     {
-        public CityController(ICityRepository repository) : base(repository)
+        public WareCategoryController(IWareCategoryRepository repository) : base(repository)
         {
         }
 
@@ -26,22 +26,22 @@ namespace Wedding.AdminPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCityDto body)
+        public async Task<IActionResult> Create([FromBody] CreateWareCategoryDto body)
         {
-            var city = new City
+            var wareCategory = new WareCategory
             {
                 Name = body.Name
             };
 
-            await Repository.Create(city);
+            await Repository.Create(wareCategory);
 
             return NoContent();
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var city = await Repository.GetByIdAsync(id);
-            await Repository.Delete(city);
+            var wareCategory = await Repository.GetByIdAsync(id);
+            await Repository.Delete(wareCategory);
 
             return RedirectToAction(nameof(Index));
         }

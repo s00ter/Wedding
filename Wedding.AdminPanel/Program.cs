@@ -17,6 +17,8 @@ builder.Services.AddDbContext<WeddingContext>(c =>
 builder.Services.AddIdentity<Client, IdentityRole>(x => x.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<WeddingContext>();
 builder.Services.AddScoped<ICityRepository,CityRepository>();
+builder.Services.AddScoped<IWareRepository,WareRepository>();
+builder.Services.AddScoped<IWareCategoryRepository, WareCategoryRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

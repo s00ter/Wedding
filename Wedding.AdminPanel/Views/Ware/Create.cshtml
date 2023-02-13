@@ -1,0 +1,55 @@
+﻿<div class="modal-header">
+        <h5 class="modal-title">Добавление</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+            <label class="form-label">Наименование</label>
+            <input type="email" class="form-control" id="wareNameInput">
+
+            <label class="form-label">Розничная цена</label>
+            <input type="number" class="form-control" id="wareRetailPriceInput">
+
+            <label class="form-label">Закупочная цена</label>
+            <input type="number" class="form-control" id="warePriceInput">
+
+            <div class="form-check">
+                <label class="form-label">Скидка</label>
+                <input type="checkbox" class="form-check-input" id="wareDiscountedInput">
+            </div>
+
+            <label class="form-label">Описание</label>
+            <input type="email" class="form-control" id="wareDescriptionInput">
+            
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onWareAddModalClose()">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="onWareAddModalConfirm()">Добавить</button>
+      </div>
+
+      <script>
+          const onWareAddModalClose = () => {
+              $("#addWareModal").hide()
+          }
+
+          const onWareAddModalConfirm = () => {
+
+              const wareName = $("#wareNameInput").val()
+              const wareRetailPrice = Number($("#wareRetailPriceInput").val())
+              const warePrice = Number($("#warePriceInput").val())
+              const wareDiscounted = $("#wareDiscountedInput").val() === 'on'
+              const wareDescription = $("#wareDescriptionInput").val()
+              $.ajax({
+               type: 'POST',
+               url: '/Ware/Create',
+               data: '{"Name":"' + wareName + '","RetailPrice": ' + wareRetailPrice + ' ,"Price": ' + warePrice + ' ,"Discounted": ' + wareDiscounted + ' ,"Description":"' + wareDescription + '"}',
+               success: function() {
+                   $("#addWareModal").hide()
+                },
+               contentType: "application/json",
+               dataType: 'json'
+           })
+              
+          }
+      </script>

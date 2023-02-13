@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Wedding.AdminPanel.Controllers.Abstractions;
-using Wedding.AdminPanel.Models.City;
+using Wedding.AdminPanel.Models.Salon;
 using Wedding.DAL.Data.Entities;
 using Wedding.DAL.Repository.Abstractions;
 
 namespace Wedding.AdminPanel.Controllers
 {
-    public class CityController : ReadWriteControllerBase<City, int, ICityRepository>
+    public class SalonController : ReadWriteControllerBase<Salon, int, ISalonRepository>
     {
-        public CityController(ICityRepository repository) : base(repository)
+        public SalonController(ISalonRepository repository) : base(repository)
         {
         }
 
@@ -26,14 +26,14 @@ namespace Wedding.AdminPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCityDto body)
+        public async Task<IActionResult> Create([FromBody] CreateSalonDto body)
         {
-            var city = new City
+            var salon = new Salon
             {
-                Name = body.Name
+                Address = body.Address
             };
 
-            await Repository.Create(city);
+            await Repository.Create(salon);
 
             return NoContent();
         }
