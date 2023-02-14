@@ -2,10 +2,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wedding.DAL.Data;
 using Wedding.DAL.Data.Entities;
+using Wedding.DAL.Repository.Abstractions;
+using Wedding.DAL.Repository.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
 
 builder.Services.AddControllersWithViews();
 
@@ -16,7 +25,11 @@ builder.Services.AddDbContext<WeddingContext>(c =>
 builder.Services.AddIdentity<Client, IdentityRole>(x => x.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<WeddingContext>();
 
+builder.Services.AddScoped<IWareCategoryRepository, WareCategoryRepository>();
+
 var app = builder.Build();
+
+app.UseCors("MyPolicy");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

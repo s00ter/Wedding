@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;500;600&display=swap');
+
+/* box sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Removing internal margins */
+ul[class],
+ol[class] {
+    padding: 0;
+}
+
+/* Removing external margins */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+/* Removing the standard styling for all ul and il that have the class attribute*/
+ul[class],
+ol[class] {
+    list-style: none;
+}
+
+/* Elements of a that do not have a class are reset to default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Simplify working with images */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* We specify a clear frequency in the data stream of the article*/
+article > * + * {
+    margin-top: 1em;
+}
+
+/* Inheriting fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    background-color: #f6f9ff;
+}
+
+*::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    margin-left: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}

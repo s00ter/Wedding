@@ -4,6 +4,7 @@ using Wedding.Web.Models.WareCategory;
 
 namespace Wedding.Web.Controllers
 {
+    [Route("[controller]")]
     public class WareCategoryController : ControllerBase
     {
         private readonly IWareCategoryRepository _wareCategoryRepository;
