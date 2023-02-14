@@ -17,7 +17,7 @@ export const WareCategories : React.FC = () => {
     return (
         <Grid container mt={2} spacing={2} ml={'50px'} mr={'50px'}>
             {categoriesResponse && categoriesResponse.map((item) => (
-                <WareCategoryCard name={item.name} photo={photo}/>
+                <WareCategoryCard id={item.id} name={item.name} photo={photo}/>
             ))}
         </Grid>
     )

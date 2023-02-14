@@ -22,9 +22,9 @@ namespace Wedding.DAL.Repository.Implementations
         {
             var query = Context.Wares
                 .Where(w => w.CategoryId == categoryId
-                        && (priceFrom.HasValue && priceFrom >= w.RetailPrice)
-                        && (priceTo.HasValue && priceTo <= w.RetailPrice)
-                        && (search != null && w.Name.ToLower().Contains(search.ToLower())));
+                        && (!priceFrom.HasValue || priceFrom <= w.RetailPrice)
+                        && (!priceTo.HasValue || priceTo >= w.RetailPrice)
+                        && (search == null || w.Name.ToLower().Contains(search.ToLower())));
 
             var total = await query.CountAsync();
 

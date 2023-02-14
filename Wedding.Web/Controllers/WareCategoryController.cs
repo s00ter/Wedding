@@ -27,7 +27,7 @@ namespace Wedding.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetWaresByCategory(SearchWareBody body)
+        public async Task<IActionResult> GetWaresByCategory([FromBody] SearchWareBody body)
         {
             var waresResult = await _wareCategoryRepository
                 .GetWaresByFilter(body.Skip, body.Take, body.CategoryId, body.PriceFrom, body.PriceTo, body.Search);

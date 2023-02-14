@@ -1,7 +1,7 @@
 import {CATEGORIES_API_PATH} from '../constants/apiRouteConstants'
 import {apiSlice} from "../api/apiSlice";
 
-type getCategoryItemsBodyType = {
+type GetCategoryItemsBodyType = {
     skip: number
     take: number
     categoryId: string
@@ -10,17 +10,30 @@ type getCategoryItemsBodyType = {
     search: string | null
 }
 
-type categoryType = {
+type CategoryType = {
     id: string
     name: string
 }
 
+type CategoryItemType = {
+    id: string
+    name: string
+    description: string
+    price: number
+    discounted: boolean
+}
+
+export type CategoryItemsResponseType = {
+    items: CategoryItemType[]
+    total: number
+}
+
 const categoriesApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCategories: builder.query<categoryType[], null>({
+        getCategories: builder.query<CategoryType[], null>({
             query: () => CATEGORIES_API_PATH
         }),
-        getCategoryItems: builder.query<any, getCategoryItemsBodyType>({
+        getCategoryItems: builder.query<CategoryItemsResponseType, GetCategoryItemsBodyType>({
             query: (body) => ({
                 url: CATEGORIES_API_PATH,
                 method: 'POST',
@@ -32,4 +45,4 @@ const categoriesApi = apiSlice.injectEndpoints({
 })
 
 // hooks
-export const {useGetCategoriesQuery, useGetCategoryItemsQuery} = categoriesApi
+export const {useGetCategoriesQuery, useGetCategoryItemsQuery, useLazyGetCategoryItemsQuery} = categoriesApi

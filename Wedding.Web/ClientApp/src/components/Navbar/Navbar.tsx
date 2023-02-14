@@ -23,26 +23,34 @@ function HideOnScroll(props: any) {
     );
 }
 
-export const Navbar : React.FC = (props) => {
+export const Navbar: React.FC = (props) => {
     return (
         <>
             <CssBaseline/>
             <HideOnScroll {...props}>
                 <AppBar style={{background: '#2E3B55'}}>
-                    <Toolbar>
-                        <Typography variant="body2" color="inherit" sx={{flexGrow: 1}}>
-                            Свадебный салон "Валентина"
-                        </Typography>
-                        <Grid alignContent={'flex-end'}>
-                            <Typography variant="body2" mr={'50px'} color="inherit">
-                                О нас
+                    <Toolbar sx={{justifyContent: 'space-between'}}>
+                        <Grid container>
+                            <Typography variant="body2" color="inherit" sx={{flexGrow: 1}}>
+                                Свадебный салон "Валентина"
                             </Typography>
-                            <Typography variant="body2" mr={'50px'} color="inherit">
-                                Отзывы
-                            </Typography>
-                            <Typography variant="body2" color="inherit">
-                                Салоны
-                            </Typography>
+                        </Grid>
+                        <Grid container>
+                            <Grid item>
+                                <Typography variant="body2" mr={'50px'} color="inherit">
+                                    О нас
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body2" mr={'50px'} color="inherit">
+                                    Отзывы
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body2" color="inherit">
+                                    Салоны
+                                </Typography>
+                            </Grid>
                         </Grid>
                     </Toolbar>
                 </AppBar>
