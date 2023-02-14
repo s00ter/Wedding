@@ -1,21 +1,19 @@
 import {
-    Card,
     Grid,
-    Box,
-    CardContent,
-    CardMedia,
     Typography,
-    LinearProgress,
-    Tooltip,
     Slider,
-    CircularProgress, OutlinedInput
+    CircularProgress, OutlinedInput, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio
 } from "@mui/material";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {CategoryItemsResponseType, useLazyGetCategoryItemsQuery} from "core/api/wareCategoryApi";
+import {
+    CategoryItemsResponseType,
+    useGetCategoryRangesQuery,
+    useLazyGetCategoryItemsQuery
+} from "core/api/wareCategoryApi";
 import {WareCategoryItem} from "components/WareCategoryItems/WareCategoryItem/WareCategoryItem";
 import {useDebounce} from "use-debounce";
-import { PaginatedItems } from "components/Pagination/Pagination";
+import {PaginatedItems} from "components/Pagination/Pagination";
 import {RangeFrom} from "core/helpers/arrayHelper";
 
 const ELEMENTS_ON_PAGE = 5;
@@ -25,13 +23,13 @@ const valuePriceText = (value: number) => {
 }
 
 
-
 export const WareCategoryItems = () => {
     const [currentPage, setCurrentPage] = useState(0)
     const [activeItems, setActiveItems] = useState<CategoryItemsResponseType>();
-    const [priceValue, setPriceValue] = useState<number[]>([1, 1000]);
+    const [priceValue, setPriceValue] = useState<number[]>([0, 0]);
     const [nameValue, setNameValue] = useState<string>('')
 
+    const [priceSortFilter, setPriceSortFilter] = useState<'asc' | 'desc'>('desc')
     const [activePriceFilter, setActivePriceFilter] = useState<number[] | null>(null);
     const [activeNameFilter, setActiveNameFilter] = useState<string>('');
 
@@ -44,12 +42,19 @@ export const WareCategoryItems = () => {
 
     const {id} = useParams()
 
-    const priceMarks = [1, 1000].map(t => {return {value: t, label: valuePriceText(t)}})
-
     const [
         triggerCategoryItemsQuery,
         {data: itemsResponse, isFetching: isFetchingItems}
     ] = useLazyGetCategoryItemsQuery()
+
+    const {data: priceRangesResponse, isFetching: isFetchingPriceRanges} = useGetCategoryRangesQuery(id ?? '')
+
+    useEffect(() => {
+        if (priceRangesResponse) {
+            setPriceValue([priceRangesResponse.min, priceRangesResponse.max])
+        }
+
+    }, [priceRangesResponse])
 
     useEffect(() => {
         setActiveItems(itemsResponse)
@@ -71,37 +76,60 @@ export const WareCategoryItems = () => {
                 categoryId: id ?? '',
                 search: activeNameFilter.trim() === '' ? null : activeNameFilter,
                 priceFrom: activePriceFilter[0],
-                priceTo: activePriceFilter[1]
+                priceTo: activePriceFilter[1],
+                priceDesc: priceSortFilter === 'desc'
             })
         }
 
-    }, [currentPage, activePriceFilter, activeNameFilter])
+    }, [currentPage, activePriceFilter, activeNameFilter, priceSortFilter])
 
     return (
         <>
-        {isFetchingItems && <Grid position='absolute'><CircularProgress/></Grid>}
+            {(isFetchingItems || isFetchingPriceRanges) && <Grid position='absolute'><CircularProgress/></Grid>}
             <Grid container ml='50px' pr='50px' mt='5px'>
-                <Grid item xs={7}>
+                <Grid item xs={6}>
                     {activeItems && activeItems.items.map(i => (
-                        <WareCategoryItem id={i.id} name={i.name} description={i.description} price={i.price} discounted={i.discounted}/>
+                        <WareCategoryItem id={i.id} name={i.name} description={i.description} price={i.price}
+                                          discounted={i.discounted}/>
                     ))}
                 </Grid>
-                <Grid item xs={4} ml='15px' p='25px' sx={{background: 'white'}}>
+                <Grid item xs={4} ml='15px' p='25px' sx={{background: 'white', position: 'relative'}}>
                     <Grid>
                         <Typography>От {valuePriceText(priceValue[0])} до {valuePriceText(priceValue[1])}</Typography>
                     </Grid>
-                    <Slider
-                        getAriaLabel={() => 'Цена'}
-                        value={priceValue}
-                        onChange={handlePriceChange}
-                        valueLabelDisplay="auto"
-                        getAriaValueText={valuePriceText}
-                        marks={priceMarks}
-                        max={1000}
-                        min={1}
-                    />
-                    <OutlinedInput placeholder={'Наименование'} fullWidth value={nameValue} onChange={e => setNameValue(e.target.value)}/>
-                    <PaginatedItems onChangePage={setCurrentPage} itemsPerPage={5} items={RangeFrom(0, activeItems?.total ?? 0)}/>
+                    {priceRangesResponse &&
+                        <Slider
+                            getAriaLabel={() => 'Цена'}
+                            value={priceValue}
+                            onChange={handlePriceChange}
+                            valueLabelDisplay="auto"
+                            getAriaValueText={valuePriceText}
+                            marks={[
+                                {value: priceRangesResponse.min, label: valuePriceText(priceRangesResponse.min)},
+                                {value: priceRangesResponse.max, label: valuePriceText(priceRangesResponse.max)}
+                            ]}
+                            max={priceRangesResponse.max}
+                            min={priceRangesResponse.min}
+                        />}
+                    <FormControl>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue={priceSortFilter}
+                            name="radio-buttons-group"
+                            onChange={(e) => {
+                                e.target.value === 'asc' ? setPriceSortFilter('asc') : setPriceSortFilter('desc')
+                            }}
+                        >
+                            <FormControlLabel value="desc" control={<Radio/>} label="Сначала дорогие"/>
+                            <FormControlLabel value="asc" control={<Radio/>} label="Сначала дешевые"/>
+                        </RadioGroup>
+                    </FormControl>
+                    <OutlinedInput placeholder={'Наименование'} fullWidth value={nameValue}
+                                   onChange={e => setNameValue(e.target.value)}/>
+                    <Grid item sx={{position: 'absolute', bottom: 10}}>
+                        <PaginatedItems onChangePage={setCurrentPage} itemsPerPage={5}
+                                        items={RangeFrom(0, activeItems?.total ?? 0)}/>
+                    </Grid>
                 </Grid>
             </Grid>
         </>

@@ -30,7 +30,7 @@ namespace Wedding.Web.Controllers
         public async Task<IActionResult> GetWaresByCategory([FromBody] SearchWareBody body)
         {
             var waresResult = await _wareCategoryRepository
-                .GetWaresByFilter(body.Skip, body.Take, body.CategoryId, body.PriceFrom, body.PriceTo, body.Search);
+                .GetWaresByFilter(body.Skip, body.Take, body.CategoryId, body.PriceFrom, body.PriceTo, body.Search, body.PriceDesc);
 
             var mappedWares = waresResult.Wares
                 .Select(x => new SearchWareResultItem
