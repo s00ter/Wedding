@@ -17,6 +17,20 @@ namespace Wedding.DAL.Repository.Implementations
         {
         }
 
+        public async Task<(decimal Min, decimal Max)> GetCategoryPricesRange(Guid categoryId)
+        {
+            var result = await Context.WareCategories
+                .Where(x => x.Id == categoryId)
+                .Select(x => new
+                {
+                    Min = x.Wares.MinBy(w => w.Price),
+                    Max = x.Wares.MaxBy(w => w.Price)
+                })
+                .FirstOrDefaultAsync();
+
+            return (result.Min.Price,result.Max.Price);
+        }
+
         public async Task<(int Total, List<Ware> Wares)> GetWaresByFilter
             (int skip, int take, Guid categoryId, int? priceFrom, int? priceTo, string search)
         {

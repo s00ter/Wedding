@@ -53,5 +53,19 @@ namespace Wedding.Web.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("PriceRanges")]
+        public async Task<IActionResult> GetPriceRanges(Guid categoryId)
+        {
+            var ranges = await _wareCategoryRepository.GetCategoryPricesRange(categoryId);
+
+            var result = new
+            {
+                ranges.Min,
+                ranges.Max
+            };
+
+            return Ok(result);
+        }
     }
 }
