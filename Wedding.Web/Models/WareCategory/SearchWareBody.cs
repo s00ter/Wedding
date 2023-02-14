@@ -13,5 +13,7 @@
         public int? PriceTo { get; set; }
 
         public string Search { get; set; }
+
+        public bool PriceDesc { get; set; }
     }
 }
