@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Wedding.DAL\Wedding.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Salon\" />
-  </ItemGroup>
-
 </Project>

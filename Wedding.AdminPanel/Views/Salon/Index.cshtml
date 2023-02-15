@@ -1,0 +1,75 @@
+﻿@using Wedding.DAL.Data.Entities
+@model List<Salon>
+
+<div class="modal" id="addSalonModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div id="createSalonModal" class="modal-content">
+      
+    </div>
+  </div>
+</div>
+
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a onclick="onAddSalonHandler()" class="btn btn-success">
+                        <span>Добавить</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Адрес
+                    </th>
+                    <th>
+                        Дата создания
+                    </th>
+                    <th>
+                        Создатель
+                    </th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.CreatedAt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.CreatedBy)
+                        </td>
+
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const onAddSalonHandler = () => {
+    $.get("/Salon/Create", function(data) { 
+        $("#createSalonModal").html(data)
+        $("#addSalonModal").show()
+    })
+}
+</script>

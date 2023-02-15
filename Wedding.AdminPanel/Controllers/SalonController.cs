@@ -8,8 +8,10 @@ namespace Wedding.AdminPanel.Controllers
 {
     public class SalonController : ReadWriteControllerBase<Salon, int, ISalonRepository>
     {
-        public SalonController(ISalonRepository repository) : base(repository)
+        private readonly ICityRepository _cityRepository;
+        public SalonController(ISalonRepository repository,ICityRepository cityRepository) : base(repository)
         {
+            _cityRepository = cityRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -20,18 +22,33 @@ namespace Wedding.AdminPanel.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task <IActionResult> Create()
         {
+            var city = await _cityRepository.GetAllAsync();
+
+            ViewBag.City = city;
+
             return PartialView();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateSalonDto body)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] CreateSalonDto body)
         {
             var salon = new Salon
             {
-                Address = body.Address
+                Address = body.Address,
+                CityId = body.CityId
             };
+
+            if (body.File != null)
+            {
+                using var dataStream = new MemoryStream();
+                await body.File.CopyToAsync(dataStream);
+                var imageBytes = dataStream.ToArray();
+
+                salon.FileBytes = imageBytes;
+            }
 
             await Repository.Create(salon);
 
