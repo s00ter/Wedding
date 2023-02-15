@@ -1,6 +1,4 @@
-﻿using Wedding.DAL.Data.Entities;
-
-namespace Wedding.Web.Models.Order
+﻿namespace Wedding.Web.Models.Order
 {
     public class RemoveOrder
     {

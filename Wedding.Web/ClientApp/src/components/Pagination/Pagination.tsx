@@ -9,15 +9,9 @@ type PaginatedItemsPropsType = {
 }
 
 export const PaginatedItems = (props: PaginatedItemsPropsType) => {
-    const [itemOffset, setItemOffset] = useState(0);
 
-    const endOffset = itemOffset + props.itemsPerPage;
     const pageCount = Math.ceil(props.items.length / props.itemsPerPage);
-
     const handlePageClick = (event: { selected: number }) => {
-        const newOffset = (event.selected * props.itemsPerPage) % props.items.length;
-
-        setItemOffset(newOffset);
         props.onChangePage(event.selected)
     };
 

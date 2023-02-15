@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Wedding.DAL.Data;
 using Wedding.DAL.Data.Entities;
 using Wedding.DAL.Repository.Abstractions;
@@ -23,22 +18,30 @@ namespace Wedding.DAL.Repository.Implementations
                 .Where(x => x.Id == categoryId)
                 .Select(x => new
                 {
-                    Min = x.Wares.MinBy(w => w.Price),
-                    Max = x.Wares.MaxBy(w => w.Price)
+                    Min = x.Wares
+                        .Select(w => w.Price)
+                        .Min(),
+                    Max = x.Wares
+                        .Select(w => w.Price)
+                        .Max()
                 })
-                .FirstOrDefaultAsync();
+                .FirstAsync();
 
-            return (result.Min.Price,result.Max.Price);
+            return (result.Min ,result.Max);
         }
 
         public async Task<(int Total, List<Ware> Wares)> GetWaresByFilter
-            (int skip, int take, Guid categoryId, int? priceFrom, int? priceTo, string search)
+            (int skip, int take, Guid categoryId, int? priceFrom, int? priceTo, string search, bool priceDesc)
         {
             var query = Context.Wares
                 .Where(w => w.CategoryId == categoryId
-                        && (!priceFrom.HasValue || priceFrom <= w.RetailPrice)
-                        && (!priceTo.HasValue || priceTo >= w.RetailPrice)
-                        && (search == null || w.Name.ToLower().Contains(search.ToLower())));
+                            && (!priceFrom.HasValue || priceFrom <= w.RetailPrice)
+                            && (!priceTo.HasValue || priceTo >= w.RetailPrice)
+                            && (search == null || w.Name.ToLower().Contains(search.ToLower())));
+
+            query = priceDesc
+                ? query.OrderByDescending(w => w.Price)
+                : query.OrderBy(w => w.Price);
 
             var total = await query.CountAsync();
 

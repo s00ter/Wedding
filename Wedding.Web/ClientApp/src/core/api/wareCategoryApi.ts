@@ -1,4 +1,4 @@
-import {CATEGORIES_API_PATH} from '../constants/apiRouteConstants'
+import {CATEGORIES_API_PATH, PRICE_RANGES_API_PATH} from '../constants/apiRouteConstants'
 import {apiSlice} from "../api/apiSlice";
 
 type GetCategoryItemsBodyType = {
@@ -8,6 +8,7 @@ type GetCategoryItemsBodyType = {
     priceFrom: number | null
     priceTo: number | null
     search: string | null
+    priceDesc: boolean
 }
 
 type CategoryType = {
@@ -28,10 +29,18 @@ export type CategoryItemsResponseType = {
     total: number
 }
 
+type CategoryRangesType = {
+    min: number
+    max: number
+}
+
 const categoriesApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCategories: builder.query<CategoryType[], null>({
             query: () => CATEGORIES_API_PATH
+        }),
+        getCategoryRanges: builder.query<CategoryRangesType, string>({
+            query: (categoryId) => PRICE_RANGES_API_PATH + categoryId
         }),
         getCategoryItems: builder.query<CategoryItemsResponseType, GetCategoryItemsBodyType>({
             query: (body) => ({
@@ -45,4 +54,4 @@ const categoriesApi = apiSlice.injectEndpoints({
 })
 
 // hooks
-export const {useGetCategoriesQuery, useGetCategoryItemsQuery, useLazyGetCategoryItemsQuery} = categoriesApi
+export const {useGetCategoriesQuery, useGetCategoryRangesQuery, useLazyGetCategoryItemsQuery} = categoriesApi
