@@ -33,7 +33,8 @@ namespace Wedding.AdminPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateWareDto body)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] CreateWareDto body)
         {
             var ware = new Ware
             {
@@ -44,6 +45,15 @@ namespace Wedding.AdminPanel.Controllers
                 Description = body.Description,
                 CategoryId = body.CategoryId
             };
+
+            if (body.File != null)
+            {
+                using var dataStream = new MemoryStream();
+                await body.File.CopyToAsync(dataStream);
+                var imageBytes = dataStream.ToArray();
+
+                ware.FileBytes = imageBytes;
+            }
 
             await Repository.Create(ware);
 
@@ -57,5 +67,6 @@ namespace Wedding.AdminPanel.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

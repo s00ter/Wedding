@@ -7,6 +7,9 @@
             <label class="form-label">Наименование</label>
             <input class="form-control" id="wareNameInput">
 
+            <label class="form-label">Картинка</label>
+            <input type="file" id="wareFileInput" name="file">
+
             <label class="form-label">Розничная цена</label>
             <input type="number" class="form-control" id="wareRetailPriceInput">
 
@@ -40,27 +43,38 @@
               $("#addWareModal").hide()
           }
 
-          const onWareAddModalConfirm = () => {
+        const onWareAddModalConfirm = () => {
 
-              const wareName = $("#wareNameInput").val()
-              const wareRetailPrice = Number($("#wareRetailPriceInput").val())
-              const warePrice = Number($("#warePriceInput").val())
-              const wareDiscounted = $("#wareDiscountedInput").val() === 'on'
-              const wareDescription = $("#wareDescriptionInput").val()
-              const wareCategoryId = $('#wareCategorySelect option:selected').val()
+            var fd = new FormData();
 
-              console.log($("#wareDiscountedInput").val())
+            const wareName = $("#wareNameInput").val()
+            var files = $('#wareFileInput')[0].files;
+            const wareRetailPrice = Number($("#wareRetailPriceInput").val())
+            const warePrice = Number($("#warePriceInput").val())
+            const wareDiscounted = $("#wareDiscountedInput").is(':checked')
+            const wareDescription = $("#wareDescriptionInput").val()
+            const wareCategoryId = $('#wareCategorySelect option:selected').val()
 
-              $.ajax({
-               type: 'POST',
-               url: '/Ware/Create',
-               data: '{"Name":"' + wareName + '", "CategoryId": "' + wareCategoryId + '", "RetailPrice": ' + wareRetailPrice + ' ,"Price": ' + warePrice + ' ,"Discounted": ' + wareDiscounted + ' ,"Description":"' + wareDescription + '"}',
-               success: function() {
-                   $("#addWareModal").hide()
-                },
-               contentType: "application/json",
-               dataType: 'json'
-           })
-              
-          }
+            fd.append('name', wareName)
+            if (files.length > 0) {
+                fd.append('file', files[0]);
+            }
+            fd.append('cetailPrice', wareRetailPrice)
+            fd.append('price', warePrice)
+            fd.append('discounted', wareDiscounted)
+            fd.append('description', wareDescription)
+            fd.append('categoryId', wareCategoryId)
+
+            $.ajax({
+                data: fd,
+                url: 'Ware/Create',
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function() {
+                    $("#addWareModal").hide()
+                }
+            })
+        }
       </script>

@@ -6,6 +6,10 @@
         <div class="mb-3">
             <label class="form-label">Наименование</label>
             <input type="email" class="form-control" id="wareCategoryNameInput">
+
+            <label class="form-label">Картинка</label>
+            <input type="file" id="wareCategoryFileInput" name="file">
+
           </div>
       </div>
       <div class="modal-footer">
@@ -22,15 +26,25 @@
 
               const wareCategoryName = $("#wareCategoryNameInput").val()
 
+              var fd = new FormData();
+              var files = $('#wareCategoryFileInput')[0].files;
+
+              fd.append('name', wareCategoryName)
+              if(files.length > 0 ){
+                fd.append('file', files[0]);
+              }
+
               $.ajax({
-               type: 'POST',
-               url: '/WareCategory/Create',
-               data: '{"Name":"' + wareCategoryName + '"}',
+              
+               data: fd,
+               url: 'WareCategory/Create',
+               cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
                success: function() {
                    $("#addWareCategoryModal").hide()
-                },
-               contentType: "application/json",
-               dataType: 'json'
+                }
            })
               
           }

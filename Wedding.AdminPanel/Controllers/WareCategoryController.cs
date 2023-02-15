@@ -12,6 +12,7 @@ namespace Wedding.AdminPanel.Controllers
         {
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var items = await Repository.GetAllAsync();
@@ -26,18 +27,29 @@ namespace Wedding.AdminPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateWareCategoryDto body)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] CreateWareCategoryDto body)
         {
             var wareCategory = new WareCategory
             {
                 Name = body.Name
             };
 
+            if (body.File != null)
+            {
+                using var dataStream = new MemoryStream();
+                await body.File.CopyToAsync(dataStream);
+                var imageBytes = dataStream.ToArray();
+
+                wareCategory.FileBytes = imageBytes;
+            }
+
             await Repository.Create(wareCategory);
 
             return NoContent();
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
             var wareCategory = await Repository.GetByIdAsync(id);
@@ -45,5 +57,6 @@ namespace Wedding.AdminPanel.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

@@ -18,6 +18,8 @@ public class Ware : AuditableEntity
 
     public Guid CategoryId { get; set; }
 
+    public byte[] FileBytes { get; set; }
+
 
     public WareCategory Category { get; set; }
 

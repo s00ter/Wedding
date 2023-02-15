@@ -8,6 +8,7 @@ public class WareCategory : AuditableEntity
 
     public string Name { get; set; }
 
+    public byte[] FileBytes { get; set; }
 
     public List<Ware> Wares { get; set; }
 }

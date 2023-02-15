@@ -12,7 +12,7 @@ namespace Wedding.DAL.Repository.Abstractions
         Task<(int Total, List<Ware> Wares)> GetWaresByFilter
             (int skip, int take, Guid categoryId, int? priceFrom, int? priceTo, string search);
 
-        Task<(decimal Min,decimal Max)> GetCategoryPricesRange
-            (Guid categoryId)
+        Task<(decimal Min, decimal Max)> GetCategoryPricesRange
+            (Guid categoryId);
     }
 }
