@@ -5,7 +5,7 @@ import {
     CircularProgress, OutlinedInput, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {
     CategoryItemsResponseType,
     useGetCategoryRangesQuery,
@@ -15,6 +15,7 @@ import {WareCategoryItem} from "components/WareCategoryItems/WareCategoryItem/Wa
 import {useDebounce} from "use-debounce";
 import {PaginatedItems} from "components/Pagination/Pagination";
 import {RangeFrom} from "core/helpers/arrayHelper";
+import {ArrowBack} from "@mui/icons-material";
 
 const ELEMENTS_ON_PAGE = 5;
 
@@ -39,6 +40,8 @@ export const WareCategoryItems = () => {
 
     const debouncedPriceValue = useDebounce(priceValue, 300);
     const debouncedNameValue = useDebounce(nameValue, 300);
+
+    const navigate = useNavigate();
 
     const {id} = useParams()
 
@@ -85,6 +88,7 @@ export const WareCategoryItems = () => {
 
     return (
         <>
+            <Grid position={'absolute'} sx={{cursor: 'pointer'}} onClick={() => navigate('/')}><ArrowBack/></Grid>
             {(isFetchingItems || isFetchingPriceRanges) && <Grid position='absolute'><CircularProgress/></Grid>}
             <Grid container ml='50px' pr='50px' mt='5px'>
                 <Grid item xs={6}>

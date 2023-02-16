@@ -14,6 +14,7 @@ type GetCategoryItemsBodyType = {
 type CategoryType = {
     id: string
     name: string
+    photo: string | null
 }
 
 type CategoryItemType = {

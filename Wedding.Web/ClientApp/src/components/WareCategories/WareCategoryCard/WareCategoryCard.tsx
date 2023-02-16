@@ -1,7 +1,8 @@
-import {Card, CardContent, CardMedia, Grid, Typography} from "@mui/material";
+import {Card, CardContent, Grid, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {retrieveCategoryImageUrl} from "core/helpers/imageHelper";
 
-export const WareCategoryCard = (props: {id: string; photo: string; name: string }) => {
+export const WareCategoryCard = (props: {id: string; name: string }) => {
 
     const navigate = useNavigate()
 
@@ -12,10 +13,7 @@ export const WareCategoryCard = (props: {id: string; photo: string; name: string
     return (
         <Grid item xs={4}>
             <Card sx={{ maxWidth: 500, cursor: 'pointer' }} onClick={onCardClick}>
-                <CardMedia
-                    sx={{ height: 150 }}
-                    image={props.photo}
-                />
+                <img src={retrieveCategoryImageUrl(props.id)} alt='no image' style={{height: '150px'}}/>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {props.name}
@@ -23,6 +21,5 @@ export const WareCategoryCard = (props: {id: string; photo: string; name: string
                 </CardContent>
             </Card>
         </Grid>
-
     );
 }
