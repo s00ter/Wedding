@@ -1,0 +1,63 @@
+﻿@using Wedding.DAL.Data.Entities
+@model Salon
+
+<div class="modal-header">
+        <h5 class="modal-title">Добавление</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+            <label class="form-label">Адрес</label>
+            <input class="form-control" id="salonAddressInput" value="@Model.Address">
+
+            <label class="form-label">Картинка</label>
+            <input type="file" id="salonFileInput" name="file">
+
+            <label class="form-label">Город</label>
+            <select class="form-select" id="citySelect" value="@Model.CityId">
+                @foreach(var city in ViewBag.City)
+            {
+                <option value="@city.Id">@city.Name</option>
+            }
+            </select>
+
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onSalonUpdateModalClose()">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="onSalonUpdateModalConfirm()">Добавить</button>
+      </div>
+
+      <script>
+          const onSalonUpdateModalClose = () => {
+              $("#addSalonModal").hide()
+          }
+
+        const onSalonUpdateModalConfirm = () => {
+
+            var fd = new FormData();
+
+            const salonAddress = $("#salonAddressInput").val()
+            var files = $('#salonFileInput')[0].files;
+            const cityId = $('#citySelect option:selected').val()
+
+            fd.append('address', salonAddress)
+            if (files.length > 0) {
+                fd.append('file', files[0]);
+            }
+            fd.append('cityId', cityId)
+            fd.append('id', '@Model.Id')
+
+            $.ajax({
+                data: fd,
+                url: 'Salon/Update',
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function() {
+                    $("#UpdateSalonModal").hide()
+                }
+            })
+        }
+      </script>

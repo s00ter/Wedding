@@ -57,6 +57,7 @@
 
                         <td>
                             <a asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
+                            <a href="#" onclick="onUpdateSalonHandler('@item.Id')">Редактирование</a>
                         </td>
                     </tr>
                 }
@@ -68,6 +69,12 @@
 <script>
 const onAddSalonHandler = () => {
     $.get("/Salon/Create", function(data) { 
+        $("#createSalonModal").html(data)
+        $("#addSalonModal").show()
+    })
+}
+const onUpdateSalonHandler = (id) => {
+    $.get("/Salon/Update?id=" + id, function(data) { 
         $("#createSalonModal").html(data)
         $("#addSalonModal").show()
     })

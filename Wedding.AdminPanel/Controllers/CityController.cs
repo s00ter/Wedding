@@ -45,5 +45,25 @@ namespace Wedding.AdminPanel.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var item = await Repository.GetByIdAsync(id);
+
+            return PartialView(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] UpdateCityDto body)
+        {
+            var item = await Repository.GetByIdAsync(body.Id);
+
+            item.Name = body.Name;
+
+            await Repository.Update(item);
+
+            return NoContent();
+        }
     }
 }

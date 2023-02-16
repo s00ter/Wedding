@@ -62,5 +62,40 @@ namespace Wedding.AdminPanel.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var cities = await _cityRepository.GetAllAsync();
+
+            var item = await Repository.GetByIdAsync(id);
+
+            ViewBag.City = cities;
+
+            return PartialView(item);
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromForm] UpdateSalonDto body)
+        {
+            var item = await Repository.GetByIdAsync(body.Id);
+
+            item.Address = body.Address;
+            item.CityId = body.CityId;
+
+            if (body.File != null)
+            {
+                using var dataStream = new MemoryStream();
+                await body.File.CopyToAsync(dataStream);
+                var imageBytes = dataStream.ToArray();
+
+                item.FileBytes = imageBytes;
+            }
+
+            await Repository.Update(item);
+
+            return NoContent();
+        }
     }
 }

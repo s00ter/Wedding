@@ -1,31 +1,35 @@
-﻿<div class="modal-header">
+﻿@using Wedding.DAL.Data.Entities
+@model Ware
+
+<div class="modal-header">
         <h5 class="modal-title">Добавление</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
             <label class="form-label">Наименование</label>
-            <input class="form-control" id="wareNameInput">
+            <input class="form-control" id="wareNameInput" value="@Model.Name">
 
             <label class="form-label">Картинка</label>
-            <input type="file" id="wareFileInput" name="file">
+            <input type="file" id="wareFileInput" name="file" >
 
             <label class="form-label">Розничная цена</label>
-            <input type="number" class="form-control" id="wareRetailPriceInput">
+            <input type="number" class="form-control" id="wareRetailPriceInput" value="Number((@Model.RetailPrice).toString())">
 
             <label class="form-label">Закупочная цена</label>
-            <input type="number" class="form-control" id="warePriceInput">
+            <input type="number" class="form-control" id="warePriceInput" value="Number((@Model.Price).toString())">
 
             <div class="form-check">
                 <label class="form-label">Скидка</label>
-                <input type="checkbox" class="form-check-input" id="wareDiscountedInput">
+                <input type="checkbox" class="form-check-input" id="wareDiscountedInput" value="@Model.Discounted">
             </div>
 
             <label class="form-label">Описание</label>
-            <input class="form-control" id="wareDescriptionInput">
+            <input class="form-control" id="wareDescriptionInput" value="@Model.Description">
             
             <label class="form-label">Категория</label>
-            <select class="form-select" id="wareCategorySelect">
+            <select class="form-select" id="wareCategorySelect" value="@Model.Category">
+
                 @foreach(var category in ViewBag.Categories)
             {
                 <option value="@category.Id">@category.Name</option>
@@ -34,16 +38,16 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onWareAddModalClose()">Отмена</button>
-        <button type="button" class="btn btn-primary" onclick="onWareAddModalConfirm()">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onWareUpdateModalClose()">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="onWareUpdateModalConfirm()">Добавить</button>
       </div>
 
       <script>
-          const onWareAddModalClose = () => {
-              $("#addWareModal").hide()
-          }
+            const onWareUpdateModalClose = () => {
+                $("#addWareModal").hide()
+            }
 
-        const onWareAddModalConfirm = () => {
+        const onWareUpdateModalConfirm = () => {
 
             var fd = new FormData();
 
@@ -64,16 +68,17 @@
             fd.append('discounted', wareDiscounted)
             fd.append('description', wareDescription)
             fd.append('categoryId', wareCategoryId)
+            fd.append('id', '@Model.Id')
 
             $.ajax({
                 data: fd,
-                url: 'Ware/Create',
+                url: 'Ware/Update',
                 cache: false,
                 contentType: false,
                 processData: false,
                 type: 'POST',
                 success: function() {
-                    $("#addWareModal").hide()
+                    $("#UpdateWareModal").hide()
                 }
             })
         }

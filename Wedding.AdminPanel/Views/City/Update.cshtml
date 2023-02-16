@@ -1,33 +1,37 @@
-﻿<div class="modal-header">
+﻿@using Wedding.DAL.Data.Entities
+@model City
+
+<div class="modal-header">
         <h5 class="modal-title">Добавление</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
             <label class="form-label">Наименование</label>
-            <input type="email" class="form-control" id="cityNameInput">
+            <input type="email" class="form-control" id="cityNameInput" value="@Model.Name">
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onCityAddModalClose()">Отмена</button>
-        <button type="button" class="btn btn-primary" onclick="onCityAddModalConfirm()">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onCityUpdateModalClose()">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="onCityUpdateModalConfirm()">Добавить</button>
       </div>
 
       <script>
-          const onCityAddModalClose = () => {
+          const onCityUpdateModalClose = () => {
               $("#addCityModal").hide()
           }
 
-          const onCityAddModalConfirm = () => {
+          const onCityUpdateModalConfirm = () => {
+
 
               const cityName = $("#cityNameInput").val()
 
               $.ajax({
                type: 'POST',
-               url: '/City/Create',
-               data: '{"Name":"' + cityName + '"}',
+               url: '/City/Update',
+               data: '{"Id":"' + @Model.Id + '", "Name":"' + cityName + '"}',
                success: function() {
-                   $("#addCityModal").hide()
+                   $("#UpdateCityModal").hide()
                 },
                contentType: "application/json",
                dataType: 'json'

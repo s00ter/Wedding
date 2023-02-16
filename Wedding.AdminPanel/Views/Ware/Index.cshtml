@@ -89,6 +89,7 @@
 
                         <td>
                             <a asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
+                            <a href="#" onclick="onUpdateWareHandler('@item.Id')">Редактирование</a>
                         </td>
                     </tr>
                 }
@@ -100,6 +101,12 @@
 <script>
 const onAddWareHandler = () => {
     $.get("/Ware/Create", function(data) { 
+        $("#createWareModal").html(data)
+        $("#addWareModal").show()
+    })
+}
+const onUpdateWareHandler = (id) => {
+    $.get("/Ware/Update?id=" + id, function(data) { 
         $("#createWareModal").html(data)
         $("#addWareModal").show()
     })
