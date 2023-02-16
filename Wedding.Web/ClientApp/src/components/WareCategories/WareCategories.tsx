@@ -7,9 +7,6 @@ export const WareCategories : React.FC = () => {
 
     const {data: categoriesResponse, isFetching: isFetchingCategories} =
         useGetCategoriesQuery(null)
-
-    const photo = 'https://www.hdwallpapers.in/download/darling_in_the_franxx_blue_eyes_zero_two_with_background_of_volleyball_net_hd_anime-HD.jpg'
-
     if (isFetchingCategories) {
         return <LinearProgress />
     }
@@ -17,7 +14,7 @@ export const WareCategories : React.FC = () => {
     return (
         <Grid container mt={2} spacing={2} ml={'50px'} mr={'50px'}>
             {categoriesResponse && categoriesResponse.map((item) => (
-                <WareCategoryCard id={item.id} name={item.name} photo={photo}/>
+                <WareCategoryCard id={item.id} name={item.name}/>
             ))}
         </Grid>
     )

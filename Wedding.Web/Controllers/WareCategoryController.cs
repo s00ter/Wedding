@@ -20,10 +20,24 @@ namespace Wedding.Web.Controllers
             var items = await _wareCategoryRepository.GetAllAsync();
 
             var result = items
-                .Select(i => new WareCategoryDto { Id = i.Id, Name = i.Name })
+                .Select(i => new WareCategoryDto
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Image = i.FileBytes == null
+                        ? null
+                        : Convert.ToBase64String(i.FileBytes, 0, i.FileBytes.Length), })
                 .ToList();
 
             return Ok(result);
+        }
+
+        [HttpGet("{categoryId:guid}/Image")]
+        public async Task<IActionResult> GetCategoryImage(Guid categoryId)
+        {
+            var items = await _wareCategoryRepository.GetByIdAsync(categoryId);
+
+            return File(items.FileBytes, "image/jpg");
         }
 
         [HttpPost]
@@ -38,8 +52,9 @@ namespace Wedding.Web.Controllers
                     Description = x.Description,
                     Id = x.Id,
                     Discounted = x.Discounted,
-                    //TODO: add image from db
-                    Image = string.Empty,
+                    Image = x.FileBytes == null
+                        ? null
+                        : Convert.ToBase64String(x.FileBytes, 0, x.FileBytes.Length),
                     Name = x.Name,
                     Price = x.RetailPrice
                 })
