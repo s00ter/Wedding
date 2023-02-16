@@ -14,6 +14,8 @@ public class Salon : AuditableEntity
 
     public int CityId { get; set; }
 
+    public byte[] FileBytes { get; set; }
+
 
     public City City { get; set; }
 

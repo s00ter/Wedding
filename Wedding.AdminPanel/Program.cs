@@ -19,6 +19,7 @@ builder.Services.AddIdentity<Client, IdentityRole>(x => x.SignIn.RequireConfirme
 builder.Services.AddScoped<ICityRepository,CityRepository>();
 builder.Services.AddScoped<IWareRepository,WareRepository>();
 builder.Services.AddScoped<IWareCategoryRepository, WareCategoryRepository>();
+builder.Services.AddScoped<ISalonRepository, SalonRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
