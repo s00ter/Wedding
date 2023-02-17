@@ -1,0 +1,47 @@
+﻿@using Wedding.DAL.Data.Entities
+@model List<WareCategory>
+
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Наименование
+        </th>
+
+        <th>
+            Дата создания
+        </th>
+        <th>
+            Создатель
+        </th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CreatedBy)
+            </td>
+
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
+                <a href="#" onclick="onUpdateWareCategoryHandler('@item.Id')">Редактирование</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
