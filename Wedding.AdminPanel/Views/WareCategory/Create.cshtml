@@ -1,6 +1,6 @@
 ﻿<div class="modal-header">
         <h5 class="modal-title">Добавление</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="onWareCategoryUpdateModalClose()"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
@@ -35,7 +35,6 @@
               }
 
               $.ajax({
-              
                data: fd,
                url: 'WareCategory/Create',
                cache: false,
@@ -43,10 +42,9 @@
                 processData: false,
                 type: 'POST',
                success: function() {
-                   $("#addWareCategoryModal").hide()
+                   onWareCategoryAddModalClose()
                    loadAndUpdateData()
                 }
            })
-              
           }
       </script>

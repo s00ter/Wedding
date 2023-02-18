@@ -20,85 +20,21 @@
                 </div>
             </div>
         </div>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>
-                        #
-                    </th>
-                    <th>
-                        Наименование
-                    </th>
-                    <th>
-                        Розничная цена
-                    </th>
-                    <th>
-                        Закупочная цена
-                    </th>
-                    <th>
-                        Скидка
-                    </th>
-                    <th>
-                        Описание
-                    </th>
-                    <th>
-                        Дата создания
-                    </th>
-                    <th>
-                        Создатель
-                    </th>
-                    <th>Действия</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => item.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.RetailPrice)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.Price)
-                        </td>
-                        <td>
-                            @if (item.Discounted)
-                            {
-                                <span class="badge bg-primary">ДА</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">НЕТ</span>
-                            }
+        <div id="table-container">
 
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.CreatedAt)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.CreatedBy)
-                        </td>
-
-                        <td>
-                            <a asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
-                            <a href="#" onclick="onUpdateWareHandler('@item.Id')">Редактирование</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        </div>
     </div>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+
+const loadAndUpdateData = () => {
+    $.get("/Ware/Table", function(data) {
+        $("#table-container").html(data)
+    })
+}
+
 const onAddWareHandler = () => {
     $.get("/Ware/Create", function(data) { 
         $("#createWareModal").html(data)
@@ -106,9 +42,12 @@ const onAddWareHandler = () => {
     })
 }
 const onUpdateWareHandler = (id) => {
-    $.get("/Ware/Update?id=" + id, function(data) { 
+    $.get("/Ware/Update?id=" + id, function(data) {
         $("#createWareModal").html(data)
         $("#addWareModal").show()
     })
 }
+
+$(document).ready(() => loadAndUpdateData())
+
 </script>

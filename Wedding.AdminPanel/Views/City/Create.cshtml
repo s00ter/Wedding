@@ -1,6 +1,6 @@
 ﻿<div class="modal-header">
         <h5 class="modal-title">Добавление</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="onCityUpdateModalClose()"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
@@ -27,7 +27,8 @@
                url: '/City/Create',
                data: '{"Name":"' + cityName + '"}',
                success: function() {
-                   $("#addCityModal").hide()
+                   onCityAddModalClose()
+                   loadAndUpdateData()
                 },
                contentType: "application/json",
                dataType: 'json'

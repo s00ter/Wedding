@@ -14,11 +14,17 @@ namespace Wedding.AdminPanel.Controllers
             _cityRepository = cityRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet("[controller]/Table")]
+        public async Task<IActionResult> Table()
         {
             var items = await Repository.GetAllAsync();
 
-            return View(items);
+            return PartialView(items);
         }
 
         [HttpGet]

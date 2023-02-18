@@ -20,49 +20,9 @@
                 </div>
             </div>
         </div>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>
-                        #
-                    </th>
-                    <th>
-                        Наименование
-                    </th>
+        <div id="table-container">
 
-                    <th>
-                        Дата создания
-                    </th>
-                    <th>
-                        Создатель
-                    </th>
-                    <th>Действия</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => item.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.CreatedAt)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => item.CreatedBy)
-                        </td>
-
-                        <td>
-                            <a asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        </div>
     </div>
 </div>
 
