@@ -15,6 +15,7 @@ namespace Wedding.AdminPanel.Controllers
             _wareCategoryRepository = wareCategoryRepository;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
