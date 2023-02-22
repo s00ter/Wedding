@@ -12,5 +12,7 @@
         Task<TEntity> Update(TEntity entity);
 
         Task Delete(TEntity entity);
+
+        IQueryable<TEntity> GetQuery();
     }
 }

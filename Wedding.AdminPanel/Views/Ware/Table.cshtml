@@ -1,5 +1,13 @@
 ﻿@using Wedding.DAL.Data.Entities
-@model List<Ware>
+@model Wedding.AdminPanel.Models.Pagination.BasePagedModel<Ware>
+
+<style>
+    a.disabled {
+      pointer-events: none;
+      cursor: default;
+      color: gray;
+    }
+</style>
 
 <table class="table table-striped table-hover">
     <thead>
@@ -32,7 +40,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
+    @foreach (var item in Model.PageItems)
     {
         <tr>
             <td>
@@ -75,3 +83,30 @@
     }
     </tbody>
 </table>
+
+<div>
+    @Model.Page из @Model.LastPage
+</div>
+
+<ul class="pagination">
+    <li class="page-item">
+        <a href="#" class="page-link@(Model.Page != 1 ? "" : " disabled")"  onclick="onPageBtnClick(1)">Начало</a>
+    </li>
+    <li class="page-item">
+        <a href="#" class="page-link@(Model.Page != 1 ? "" : " disabled")" onclick="onPageBtnClick(@(Model.Page - 1))">&laquo;</a>
+    </li>
+    <li class="page-item">
+        <a href="#" class="page-link@(Model.LastPage > Model.Page ? "" : " disabled")" onclick="onPageBtnClick(@(Model.Page + 1))">&raquo;</a>
+    </li>
+    <li class="page-item">
+        <a href="#" class="page-link@(Model.LastPage > Model.Page ? "" : " disabled")"  onclick="onPageBtnClick(@(Model.LastPage))">Конец</a>
+    </li>
+</ul>
+
+<script>
+    const onPageBtnClick = (page) => {
+        $.get("/Ware/Table?page=" + page, function(data) {
+            $("#table-container").html(data)
+        })
+    }
+</script>

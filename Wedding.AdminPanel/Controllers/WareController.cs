@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Wedding.AdminPanel.Constants;
 using Wedding.AdminPanel.Controllers.Abstractions;
+using Wedding.AdminPanel.Models.Pagination;
 using Wedding.AdminPanel.Models.Ware;
 using Wedding.DAL.Data.Entities;
 using Wedding.DAL.Repository.Abstractions;
@@ -21,11 +24,27 @@ namespace Wedding.AdminPanel.Controllers
         }
 
         [HttpGet("[controller]/Table")]
-        public async Task<IActionResult> Table()
+        public async Task<IActionResult> Table(int? page)
         {
-            var items = await Repository.GetAllAsync();
+            page ??= 1;
+            var query = Repository.GetQuery();
 
-            return PartialView(items);
+            var total = await query
+                .CountAsync();
+
+            var items = await query
+                .Skip((page.Value - 1) * PaginationConstants.ElementsOnPage)
+                .Take(PaginationConstants.ElementsOnPage)
+                .ToListAsync();
+
+            var result = new BasePagedModel<Ware>
+            {
+                Total = total,
+                Page = page.Value,
+                PageItems = items
+            };
+
+            return PartialView(result);
         }
 
         [HttpGet]

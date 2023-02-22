@@ -6,13 +6,20 @@ import reportWebVitals from "./reportWebVitals";
 import React from 'react';
 import {Provider} from "react-redux";
 import { store } from 'core/store/store'
+// @ts-ignore
+import { PersistGate } from 'redux-persist/integration/react';
+import {persistStore} from "redux-persist";
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
+
+const persistor = persistStore(store);
 
 ReactDOM.render(
     <BrowserRouter basename={baseUrl ?? undefined}>
         <Provider store={store}>
-            <App />
+            <PersistGate persistor={persistor}>
+                <App />
+            </PersistGate>
         </Provider>
     </BrowserRouter>,
     document.getElementById('root')

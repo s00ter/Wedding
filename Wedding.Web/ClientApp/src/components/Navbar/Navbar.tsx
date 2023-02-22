@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import {Outlet} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {selectCartItems} from "core/store/cartSlice";
 
 function HideOnScroll(props: any) {
     const {children, window} = props;
@@ -24,6 +26,13 @@ function HideOnScroll(props: any) {
 }
 
 export const Navbar: React.FC = (props) => {
+    const cartItems = useSelector(selectCartItems)
+
+    let sum = 0;
+    for (let i = 0; i < cartItems.length; i++) {
+        sum += cartItems[i].price
+    }
+
     return (
         <>
             <CssBaseline/>
@@ -52,6 +61,11 @@ export const Navbar: React.FC = (props) => {
                                 </Typography>
                             </Grid>
                         </Grid>
+                        {cartItems && cartItems.length !== 0 && (
+                            <Grid sx={{zIndex: 9999}}>
+                                {cartItems.length} товаров на {sum} BYN
+                            </Grid>
+                        )}
                     </Toolbar>
                 </AppBar>
             </HideOnScroll>

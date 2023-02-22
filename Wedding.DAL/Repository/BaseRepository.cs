@@ -30,6 +30,14 @@ namespace Wedding.DAL.Repository
             await Context.SaveChangesAsync();
         }
 
+        public IQueryable<TEntity> GetQuery()
+        {
+            var query = Context.Set<TEntity>()
+                .AsNoTracking();
+
+            return query;
+        }
+
         public async Task<List<TEntity>> GetAllAsync()
         {
             var showAll = Context.Set<TEntity>().AsQueryable();
