@@ -8,33 +8,33 @@
       <div class="modal-body">
         <div class="mb-3">
             <label class="form-label">Наименование</label>
-            <input class="form-control" id="wareNameInput" value="@Model.Name">
+            <p><input class="form-control" id="wareNameInput" value="@Model.Name"></p>
 
             <label class="form-label">Картинка</label>
-            <input type="file" id="wareFileInput" name="file" >
+            <p><input type="file" id="wareFileInput" name="file" ></p>
 
             <label class="form-label">Розничная цена</label>
-            <input type="number" class="form-control" id="wareRetailPriceInput" value="Number((@Model.RetailPrice).toString())">
+            <p><input type="number" class="form-control" id="wareRetailPriceInput" value="Number((@Model.RetailPrice).toString())"></p>
 
             <label class="form-label">Закупочная цена</label>
-            <input type="number" class="form-control" id="warePriceInput" value="Number((@Model.Price).toString())">
+            <p><input type="number" class="form-control" id="warePriceInput" value="Number((@Model.Price).toString())"></p>
 
             <div class="form-check">
                 <label class="form-label">Скидка</label>
-                <input type="checkbox" class="form-check-input" id="wareDiscountedInput" value="@Model.Discounted">
+               <p> <input type="checkbox" class="form-check-input" id="wareDiscountedInput" value="@Model.Discounted"></p>
             </div>
 
             <label class="form-label">Описание</label>
-            <input class="form-control" id="wareDescriptionInput" value="@Model.Description">
+            <p><input class="form-control" id="wareDescriptionInput" value="@Model.Description"></p>
             
             <label class="form-label">Категория</label>
-            <select class="form-select" id="wareCategorySelect" value="@Model.Category">
+            <p><select class="form-select" id="wareCategorySelect" value="@Model.Category">
 
                 @foreach(var category in ViewBag.Categories)
             {
                 <option value="@category.Id">@category.Name</option>
             }
-            </select>
+            </select></p>
           </div>
       </div>
       <div class="modal-footer">

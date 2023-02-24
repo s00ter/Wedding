@@ -42,7 +42,7 @@ namespace Wedding.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetSalons()
         {
             var items = await _salonRepository.GetAllAsync();
 

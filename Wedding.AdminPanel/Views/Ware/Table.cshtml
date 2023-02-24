@@ -76,8 +76,8 @@
             </td>
 
             <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
-                <a href="#" onclick="onUpdateWareHandler('@item.Id')">Редактирование</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Удаление</a>
+                <a href="#" onclick="onUpdateWareHandler('@item.Id')" class="btn btn-warning">Редактирование</a>
             </td>
         </tr>
     }
