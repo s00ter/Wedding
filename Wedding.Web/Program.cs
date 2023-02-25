@@ -26,6 +26,7 @@ builder.Services.AddIdentity<Client, IdentityRole>(x => x.SignIn.RequireConfirme
     .AddEntityFrameworkStores<WeddingContext>();
 
 builder.Services.AddScoped<IWareCategoryRepository, WareCategoryRepository>();
+builder.Services.AddScoped<ISalonRepository, SalonRepository>();
 
 var app = builder.Build();
 

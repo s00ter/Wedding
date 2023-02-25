@@ -2,7 +2,6 @@
 {
     public class SalonDto
     {
-
         public string Address { get; set; }
 
         public double Latitude { get; set; }

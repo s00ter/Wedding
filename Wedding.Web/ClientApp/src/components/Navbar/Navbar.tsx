@@ -8,7 +8,7 @@ import {
     useScrollTrigger
 } from "@mui/material";
 import React from "react";
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCartItems} from "core/store/cartSlice";
 
@@ -26,6 +26,8 @@ function HideOnScroll(props: any) {
 }
 
 export const Navbar: React.FC = (props) => {
+    const navigate = useNavigate();
+
     const cartItems = useSelector(selectCartItems)
 
     let sum = 0;
@@ -39,7 +41,7 @@ export const Navbar: React.FC = (props) => {
             <HideOnScroll {...props}>
                 <AppBar style={{background: '#2E3B55'}}>
                     <Toolbar sx={{justifyContent: 'space-between'}}>
-                        <Grid container>
+                        <Grid container sx={{cursor: 'pointer'}} onClick={() => navigate('/')}>
                             <Typography variant="body2" color="inherit" sx={{flexGrow: 1}}>
                                 Свадебный салон "Валентина"
                             </Typography>
@@ -55,7 +57,7 @@ export const Navbar: React.FC = (props) => {
                                     Отзывы
                                 </Typography>
                             </Grid>
-                            <Grid item>
+                            <Grid item sx={{cursor: 'pointer'}} onClick={() => navigate('/salons')}>
                                 <Typography variant="body2" color="inherit">
                                     Салоны
                                 </Typography>

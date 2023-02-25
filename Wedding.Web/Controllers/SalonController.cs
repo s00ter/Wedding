@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Wedding.DAL.Data.Entities;
 using Wedding.DAL.Repository.Abstractions;
+using Wedding.Web.Models.City;
 using Wedding.Web.Models.Salon;
 
 namespace Wedding.Web.Controllers
@@ -42,11 +43,33 @@ namespace Wedding.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetSalons()
         {
             var items = await _salonRepository.GetAllAsync();
 
-            return Ok(items);
+            var mappedItems = items
+                .Select(s => new SalonInfoDto
+                {
+                    Id = s.Id,
+                    Address = s.Address,
+                    City = new CityDto
+                    {
+                        Name = s.City.Name
+                    },
+                    Latitude = s.Latitude,
+                    Longitude = s.Longitude
+                })
+                .ToList();
+
+            return Ok(mappedItems);
+        }
+
+        [HttpGet("{salonId:int}/Image")]
+        public async Task<IActionResult> GetSalonImage(int salonId)
+        {
+            var item = await _salonRepository.GetByIdAsync(salonId);
+
+            return File(item.FileBytes, "image/jpg");
         }
     }
 }
