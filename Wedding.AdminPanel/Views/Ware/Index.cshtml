@@ -30,9 +30,11 @@
 <script>
 
 const loadAndUpdateData = () => {
+    showRombus()
     $.get("/Ware/Table", function(data) {
         $("#table-container").html(data)
     })
+    hideRombus()
 }
 
 const onAddWareHandler = () => {
