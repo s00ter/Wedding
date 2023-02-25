@@ -5,32 +5,32 @@
       <div class="modal-body">
         <div class="mb-3">
             <label class="form-label">Наименование</label>
-            <input class="form-control" id="wareNameInput">
+            <p><input class="form-control" id="wareNameInput"></p>
 
             <label class="form-label">Картинка</label>
-            <input type="file" id="wareFileInput" name="file">
+            <p><input type="file" id="wareFileInput" name="file"></p>
 
             <label class="form-label">Розничная цена</label>
-            <input type="number" class="form-control" id="wareRetailPriceInput">
+            <p><input type="number" class="form-control" id="wareRetailPriceInput"></p>
 
             <label class="form-label">Закупочная цена</label>
-            <input type="number" class="form-control" id="warePriceInput">
+            <p><input type="number" class="form-control" id="warePriceInput"></p>
 
             <div class="form-check">
                 <label class="form-label">Скидка</label>
-                <input type="checkbox" class="form-check-input" id="wareDiscountedInput">
+                <p><input type="checkbox" class="form-check-input" id="wareDiscountedInput"></p>
             </div>
 
             <label class="form-label">Описание</label>
-            <input class="form-control" id="wareDescriptionInput">
+            <p><input class="form-control" id="wareDescriptionInput"></p>
             
             <label class="form-label">Категория</label>
-            <select class="form-select" id="wareCategorySelect">
+            <p><select class="form-select" id="wareCategorySelect">
                 @foreach(var category in ViewBag.Categories)
             {
                 <option value="@category.Id">@category.Name</option>
             }
-            </select>
+            </select></p>
           </div>
       </div>
       <div class="modal-footer">

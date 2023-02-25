@@ -5,7 +5,7 @@
       <div class="modal-body">
         <div class="mb-3">
             <label class="form-label">Наименование</label>
-            <input type="email" class="form-control" id="cityNameInput">
+            <p><input type="email" class="form-control" id="cityNameInput"></p>
           </div>
       </div>
       <div class="modal-footer">
@@ -22,7 +22,7 @@
 
               const cityName = $("#cityNameInput").val()
 
-              $.ajax({
+              $.ajax({  
                type: 'POST',
                url: '/City/Create',
                data: '{"Name":"' + cityName + '"}',

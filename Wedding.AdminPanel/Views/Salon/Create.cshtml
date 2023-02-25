@@ -5,18 +5,18 @@
       <div class="modal-body">
         <div class="mb-3">
             <label class="form-label">Адрес</label>
-            <input class="form-control" id="salonAddressInput">
+            <p><input class="form-control" id="salonAddressInput"></p>
 
-            <label class="form-label">Картинка</label>
-            <input type="file" id="salonFileInput" name="file">
+            <label class="form-label" >Картинка</label>
+            <p><input type="file" id="salonFileInput" name="file"></p>
 
             <label class="form-label">Город</label>
-            <select class="form-select" id="citySelect">
+            <p><select class="form-select" id="citySelect">
                 @foreach(var city in ViewBag.City)
             {
                 <option value="@city.Id">@city.Name</option>
             }
-            </select>
+            </select></p>
 
           </div>
       </div>
