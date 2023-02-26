@@ -69,7 +69,8 @@ namespace Wedding.AdminPanel.Controllers
                 Price = body.Price,
                 Discounted = body.Discounted,
                 Description = body.Description,
-                CategoryId = body.CategoryId
+                CategoryId = body.CategoryId,
+                InStock = body.InStock
             };
 
             if (body.File != null)
@@ -117,7 +118,8 @@ namespace Wedding.AdminPanel.Controllers
             item.Price = body.Price;
             item.Discounted = body.Discounted;
             item.Description = body.Description;
-            item.CategoryId = body.CategoryId; 
+            item.CategoryId = body.CategoryId;
+            item.InStock = body.InStock;
 
             if (body.File != null)
             {

@@ -21,7 +21,7 @@
 
             <div class="form-check">
                 <label class="form-label">Скидка</label>
-               <p> <input type="checkbox" class="form-check-input" id="wareDiscountedInput" value="@Model.Discounted"></p>
+                <input type="checkbox" class="form-check-input" id="wareDiscountedInput" value="@Model.Discounted">
             </div>
 
             <label class="form-label">Описание</label>
@@ -35,6 +35,11 @@
                 <option value="@category.Id">@category.Name</option>
             }
             </select></p>
+
+            <div class="form-check">
+                <label class="form-label">В наличии</label>
+                <input type="checkbox" class="form-check-input" id="wareInStockInput" value="@Model.InStock">
+            </div>
           </div>
       </div>
       <div class="modal-footer">
@@ -58,6 +63,7 @@
             const wareDiscounted = $("#wareDiscountedInput").is(':checked')
             const wareDescription = $("#wareDescriptionInput").val()
             const wareCategoryId = $('#wareCategorySelect option:selected').val()
+            const wareInStock = $("#wareInStockInput").is(':checked')
 
             fd.append('name', wareName)
             if (files.length > 0) {
@@ -68,6 +74,7 @@
             fd.append('discounted', wareDiscounted)
             fd.append('description', wareDescription)
             fd.append('categoryId', wareCategoryId)
+            fd.append('inStock', wareInStock)
             fd.append('id', '@Model.Id')
 
             $.ajax({

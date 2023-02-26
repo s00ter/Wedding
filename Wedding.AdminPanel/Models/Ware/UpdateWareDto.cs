@@ -14,6 +14,8 @@
 
         public string Description { get; set; }
 
+        public bool InStock { get; set; }
+
         public Guid CategoryId { get; set; }
 
         public IFormFile File { get; set; }

@@ -31,6 +31,9 @@
             Описание
         </th>
         <th>
+            В наличии
+        </th>
+        <th>
             Дата создания
         </th>
         <th>
@@ -67,6 +70,16 @@
             </td>
             <td>
                 @Html.DisplayFor(model => item.Description)
+            </td>
+            <td>
+                @if (item.InStock)
+                {
+                    <span class="badge bg-primary">ДА</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">НЕТ</span>
+                }
             </td>
             <td>
                 @Html.DisplayFor(model => item.CreatedAt)
