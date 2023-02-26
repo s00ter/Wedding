@@ -19,6 +19,8 @@ public class Order : AuditableEntity
 
     public string PaymentMethod { get; set; }
 
+    public string Phone { get; set; }
+
     public int? PickupSalonId { get; set; }
 
 

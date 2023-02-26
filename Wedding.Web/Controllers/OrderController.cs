@@ -42,7 +42,8 @@ namespace Wedding.Web.Controllers
         {
             var item = new Order
             {
-                Total = body.Price
+                Phone = body.Phone,
+                PaymentMethod = body.Phone
             };
 
             await _orderRepository.Create(item);
