@@ -1,4 +1,4 @@
-import {BASE_API_URL, CATEGORIES_API_PATH, SALON_API_PATH} from "core/constants/apiRouteConstants";
+import {BASE_API_URL, CATEGORIES_API_PATH, SALON_API_PATH, WARE_API_PATH} from "core/constants/apiRouteConstants";
 
 export const retrieveCategoryImageUrl = (id: string) => {
     return BASE_API_URL + CATEGORIES_API_PATH + "/" + id + "/Image"
@@ -6,4 +6,8 @@ export const retrieveCategoryImageUrl = (id: string) => {
 
 export const retrieveSalonImageUrl = (id: number) => {
     return BASE_API_URL + SALON_API_PATH + "/" + id + "/Image"
+}
+
+export const retrieveWareImageUrl = (id: string) => {
+    return BASE_API_URL + WARE_API_PATH + "/" + id + "/Image"
 }

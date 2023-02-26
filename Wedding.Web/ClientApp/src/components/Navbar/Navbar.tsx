@@ -1,8 +1,8 @@
 import {
-    AppBar,
+    AppBar, Badge, BadgeProps,
     CssBaseline,
     Grid,
-    Slide,
+    Slide, styled,
     Toolbar,
     Typography,
     useScrollTrigger
@@ -11,6 +11,7 @@ import React from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCartItems} from "core/store/cartSlice";
+import {CartIcon} from "Icons/CartIcon/CartIcon";
 
 function HideOnScroll(props: any) {
     const {children, window} = props;
@@ -24,6 +25,14 @@ function HideOnScroll(props: any) {
         </Slide>
     );
 }
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: 50,
+        top: 40,
+        padding: '0 4px',
+    },
+}));
 
 export const Navbar: React.FC = (props) => {
     const navigate = useNavigate();
@@ -64,8 +73,10 @@ export const Navbar: React.FC = (props) => {
                             </Grid>
                         </Grid>
                         {cartItems && cartItems.length !== 0 && (
-                            <Grid sx={{zIndex: 9999}}>
-                                {cartItems.length} товаров на {sum} BYN
+                            <Grid sx={{cursor: 'pointer'}} onClick={() => navigate('/cart')}>
+                                <StyledBadge badgeContent={cartItems.length} color="secondary">
+                                    <CartIcon width='50px' height='50px'/>
+                                </StyledBadge>
                             </Grid>
                         )}
                     </Toolbar>

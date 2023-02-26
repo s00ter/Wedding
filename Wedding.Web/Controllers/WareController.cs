@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Wedding.DAL.Data.Entities;
 using Wedding.DAL.Repository.Abstractions;
 using Wedding.Web.Models.Ware;
 
 namespace Wedding.Web.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class WareController : ControllerBase
     {
         private readonly IWareRepository _wareRepository;
@@ -14,8 +17,39 @@ namespace Wedding.Web.Controllers
             _wareRepository = wareRepository;
         }
 
+        [HttpGet("{wareId:guid}/Image")]
+        public async Task<IActionResult> GetCategoryImage(Guid wareId)
+        {
+            var items = await _wareRepository.GetByIdAsync(wareId);
+
+            return File(items.FileBytes, "image/jpg");
+        }
+
+        [HttpPost("Items")]
+        public async Task<IActionResult> GetItems([FromBody] GetWaresBody body)
+        {
+            var items = await _wareRepository.GetQuery()
+                .Include(w => w.Category)
+                .Where(w => body.WareIds.Contains(w.Id))
+                .ToListAsync();
+
+            var mappedItems = items
+                .Select(w => new
+                {
+                    w.Id,
+                    w.Name,
+                    w.Description,
+                    w.Discounted,
+                    Category = w.Category.Name,
+                    w.RetailPrice
+                })
+                .ToList();
+
+            return Ok(mappedItems);
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetWares()
         {
             var items = await _wareRepository.GetAllAsync();
 

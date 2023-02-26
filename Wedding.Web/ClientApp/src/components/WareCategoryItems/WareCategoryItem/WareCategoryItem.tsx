@@ -2,10 +2,9 @@ import {Box, Card, CardContent, CardMedia, Grid, Tooltip, Typography} from "@mui
 import AlarmIcon from "@mui/icons-material/Alarm";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart, CartItem, removeItem, selectCartItems} from "core/store/cartSlice";
+import {retrieveWareImageUrl} from "core/helpers/imageHelper";
 
 export const WareCategoryItem = (props: { id: string; name: string; description: string; price: number; discounted: boolean }) => {
-    const photo = 'https://www.hdwallpapers.in/download/darling_in_the_franxx_blue_eyes_zero_two_with_background_of_volleyball_net_hd_anime-HD.jpg'
-
     const dispatch = useDispatch()
 
     const cartItems = useSelector(selectCartItems)
@@ -22,7 +21,7 @@ export const WareCategoryItem = (props: { id: string; name: string; description:
         <CardMedia
             component="img"
             sx={{width: 300}}
-            image={photo}
+            image={retrieveWareImageUrl(props.id)}
             alt="Image"
         />
         <Box sx={{display: 'flex', flexDirection: 'column'}}>

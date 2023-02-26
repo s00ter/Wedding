@@ -1,4 +1,5 @@
 ﻿using Wedding.DAL.Data.Entities.Abstractions;
+using Wedding.DAL.Data.Entities.Enums;
 
 namespace Wedding.DAL.Data.Entities;
 
@@ -13,6 +14,10 @@ public class Order : AuditableEntity
     public decimal AccruedBonuses { get; set; }
 
     public decimal RemovedBonuses { get; set; }
+
+    public OrderStatus Status { get; set; }
+
+    public string PaymentMethod { get; set; }
 
     public int? PickupSalonId { get; set; }
 
