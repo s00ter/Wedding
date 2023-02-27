@@ -1,9 +1,10 @@
 ﻿import {useDispatch, useSelector} from "react-redux";
-import {addToCart, removeItem, selectCartItems} from "core/store/cartSlice";
+import {addToCart, clearCart, removeItem, selectCartItems} from "core/store/cartSlice";
 import {useGetWaresByIdsQuery} from "core/api/wareApi";
 import {FormControlLabel, Grid, LinearProgress, OutlinedInput, Radio, RadioGroup, Typography} from "@mui/material";
 import {retrieveWareImageUrl} from "core/helpers/imageHelper";
 import {useState} from "react";
+import {useCreateOrderMutation} from "core/api/orderApi";
 
 export const Cart = () => {
     const [paymentMethod, setPaymentMethod] = useState("Наличные")
@@ -15,6 +16,16 @@ export const Cart = () => {
     const queryBody = {wareIds: cartItems.map(i => i.id)}
 
     const {isFetching: isWaresFetching, data: wares} = useGetWaresByIdsQuery(queryBody)
+
+    const [
+        createOrder,
+        {
+            isLoading: isLoadingOrder,
+            isSuccess: isSuccessOrder,
+            isError: isErrorDeleteOrder,
+            reset: resetOrder,
+        },
+    ] = useCreateOrderMutation()
 
     if (cartItems.length === 0) {
         return <Typography textAlign={'center'} mt={'50px'} fontSize={'40px'}>Нет товаров в корзине</Typography>
@@ -34,10 +45,21 @@ export const Cart = () => {
     }
 
     const onOrderConfirmClick = () => {
-        
+        const body =
+            {
+                phone: phoneNumber as string,
+                paymentMethod: paymentMethod as string,
+                orderItems: cartItems.map(i =>
+                {
+                    return { quantity: i.quantity, wareId: i.id }
+                })
+            }
+
+        createOrder(body)
+        dispatch(clearCart())
     }
 
-    if (isWaresFetching) {
+    if (isWaresFetching || isLoadingOrder) {
         return <LinearProgress/>
     }
 
@@ -84,7 +106,7 @@ export const Cart = () => {
                 </RadioGroup>
                 <OutlinedInput placeholder={'Номер телефона'} fullWidth value={phoneNumber}
                                onChange={e => setPhoneNumber(e.target.value)}/>
-                <Grid border={'1px solid black'} sx={{cursor: 'pointer'}} borderRadius={'25px'} mt={'5px'} textAlign={'center'}>
+                <Grid border={'1px solid black'} sx={{cursor: 'pointer'}} borderRadius={'25px'} mt={'5px'} onClick={() => onOrderConfirmClick()} textAlign={'center'}>
                     Оформить заказ
                 </Grid>
             </Grid>

@@ -28,6 +28,7 @@ builder.Services.AddIdentity<Client, IdentityRole>(x => x.SignIn.RequireConfirme
 builder.Services.AddScoped<IWareCategoryRepository, WareCategoryRepository>();
 builder.Services.AddScoped<ISalonRepository, SalonRepository>();
 builder.Services.AddScoped<IWareRepository, WareRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 var app = builder.Build();
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Wedding.DAL.Data.Entities;
+using Wedding.DAL.Data.Entities.Enums;
 using Wedding.DAL.Repository.Abstractions;
 using Wedding.Web.Models.Order;
 
@@ -10,10 +12,13 @@ namespace Wedding.Web.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IWareRepository _wareRepository;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository,
+            IWareRepository wareRepository)
         {
             _orderRepository = orderRepository;
+            _wareRepository = wareRepository;
         }
 
         [HttpGet]
@@ -40,10 +45,30 @@ namespace Wedding.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(OrderDto body)
         {
+            var ids = body.OrderItems
+                .Select(i => i.WareId)
+                .ToList();
+
+            var ware = await _wareRepository.GetQuery()
+                .Where(r => ids.Contains(r.Id))
+                .ToListAsync();
+
+            var wares = ware
+                .Select(t => new OrderWare
+                {
+                    Total = t.RetailPrice * body.OrderItems.First(i => i.WareId == t.Id).Quantity,
+                    Count = body.OrderItems.First(i => i.WareId == t.Id).Quantity,
+                    WareId = t.Id
+                })
+                .ToList();
+
             var item = new Order
             {
                 Phone = body.Phone,
-                PaymentMethod = body.Phone
+                PaymentMethod = body.Phone,
+                OrderWares = wares,
+                Total = wares.Sum(t => t.Total),
+                Status = OrderStatus.New
             };
 
             await _orderRepository.Create(item);

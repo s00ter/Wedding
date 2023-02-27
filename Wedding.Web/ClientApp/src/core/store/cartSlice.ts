@@ -29,12 +29,18 @@ export const cartSlice = createSlice({
 
             item && item.quantity--
         },
+        clearCart: (state) => {
+            console.log(state.cart)
+            state.cart = []
+            console.log(state.cart)
+        }
     },
 })
 
 export const {
     addToCart,
     removeItem,
+    clearCart
 } = cartSlice.actions;
 
 export const selectCartItems = (state: RootState) => state.cart.cart

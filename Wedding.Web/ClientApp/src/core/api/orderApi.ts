@@ -1,14 +1,29 @@
 ﻿import {apiSlice} from "core/api/apiSlice";
-import {SALON_API_PATH} from "core/constants/apiRouteConstants";
+import {ORDER_API_PATH} from "core/constants/apiRouteConstants";
 
-const salonsApi = apiSlice.injectEndpoints({
+type CreateOrderBody = {
+    phone: string
+    paymentMethod: string
+    orderItems: OrderItem[]
+}
+
+type OrderItem = {
+    wareId: string
+    quantity: number
+}
+
+const ordersApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getSalons: builder.query<SalonType[], null>({
-            query: () => SALON_API_PATH
+        createOrder: builder.mutation<null, CreateOrderBody>({
+            query: (body) => ({
+                method: 'POST',
+                url: ORDER_API_PATH,
+                body
+            }),
         }),
     }),
     overrideExisting: false,
 })
 
 // hooks
-export const {useGetSalonsQuery} = salonsApi
+export const {useCreateOrderMutation} = ordersApi
