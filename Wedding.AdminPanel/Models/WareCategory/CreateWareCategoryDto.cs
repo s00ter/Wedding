@@ -1,9 +1,8 @@
-﻿namespace Wedding.AdminPanel.Models.WareCategory
-{
-    public class CreateWareCategoryDto
-    {
-        public string Name { get; set; }
+﻿namespace Wedding.AdminPanel.Models.WareCategory;
 
-        public IFormFile File { get; set; }
-    }
+public class CreateWareCategoryDto
+{
+    public string Name { get; set; }
+
+    public IFormFile File { get; set; }
 }

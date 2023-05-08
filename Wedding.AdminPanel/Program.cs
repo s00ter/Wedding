@@ -20,6 +20,8 @@ builder.Services.AddScoped<ICityRepository,CityRepository>();
 builder.Services.AddScoped<IWareRepository,WareRepository>();
 builder.Services.AddScoped<IWareCategoryRepository, WareCategoryRepository>();
 builder.Services.AddScoped<ISalonRepository, SalonRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

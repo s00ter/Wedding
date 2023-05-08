@@ -2,63 +2,62 @@
 using System.Linq.Expressions;
 using Wedding.DAL.Data;
 
-namespace Wedding.DAL.Repository
+namespace Wedding.DAL.Repository;
+
+public abstract class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
+    where TEntity : class
 {
-    public abstract class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId>
-        where TEntity : class
+    protected abstract Expression<Func<TEntity, bool>> GetByIdExpression(TId id);
+
+    protected abstract IQueryable<TEntity> IncludeChildrens(IQueryable<TEntity> query);
+
+    protected WeddingContext Context;
+
+    protected BaseRepository(WeddingContext weddingContext)
     {
-        protected abstract Expression<Func<TEntity, bool>> GetByIdExpression(TId id);
+        Context = weddingContext;
+    }
 
-        protected abstract IQueryable<TEntity> IncludeChildrens(IQueryable<TEntity> query);
+    public async Task Create(TEntity entity)
+    {
+        Context.Add(entity);
+        await Context.SaveChangesAsync();
+    }
 
-        protected WeddingContext Context;
+    public async Task Delete(TEntity entity)
+    {
+        Context.Remove(entity);
+        await Context.SaveChangesAsync();
+    }
 
-        protected BaseRepository(WeddingContext weddingContext)
-        {
-            Context = weddingContext;
-        }
+    public IQueryable<TEntity> GetQuery()
+    {
+        var query = Context.Set<TEntity>()
+            .AsNoTracking();
 
-        public async Task Create(TEntity entity)
-        {
-            Context.Add(entity);
-            await Context.SaveChangesAsync();
-        }
+        return query;
+    }
 
-        public async Task Delete(TEntity entity)
-        {
-            Context.Remove(entity);
-            await Context.SaveChangesAsync();
-        }
+    public async Task<List<TEntity>> GetAllAsync()
+    {
+        var showAll = Context.Set<TEntity>().AsQueryable();
 
-        public IQueryable<TEntity> GetQuery()
-        {
-            var query = Context.Set<TEntity>()
-                .AsNoTracking();
+        showAll = IncludeChildrens(showAll);
 
-            return query;
-        }
+        return await showAll.ToListAsync();
+    }
 
-        public async Task<List<TEntity>> GetAllAsync()
-        {
-            var showAll = Context.Set<TEntity>().AsQueryable();
+    public async Task<TEntity> GetByIdAsync(TId id)
+    {
+        var showOne = Context.Set<TEntity>();
+        return await showOne.FirstOrDefaultAsync(GetByIdExpression(id));
+    }
 
-            showAll = IncludeChildrens(showAll);
+    public async Task<TEntity> Update(TEntity entity)
+    {
+        Context.Update(entity);
+        await Context.SaveChangesAsync();
 
-            return await showAll.ToListAsync();
-        }
-
-        public async Task<TEntity> GetByIdAsync(TId id)
-        {
-            var showOne = Context.Set<TEntity>();
-            return await showOne.FirstOrDefaultAsync(GetByIdExpression(id));
-        }
-
-        public async Task<TEntity> Update(TEntity entity)
-        {
-            Context.Update(entity);
-            await Context.SaveChangesAsync();
-
-            return entity;
-        }
+        return entity;
     }
 }

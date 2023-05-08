@@ -2,7 +2,47 @@
     ViewData["Title"] = "Home Page";
 }
 
+@functions
+{
+    public List<string> GetMonths()
+    {
+        var currentDate = DateTime.UtcNow;
+
+        var result = new List<string>();
+
+        var iterator = 1;
+        while (iterator != 13)
+        {
+            result.Add(currentDate.ToString("MM/yyyy"));
+            currentDate = currentDate.AddMonths(-1);
+            iterator++;
+        }
+
+        return result;
+    }
+}
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Сводка за месяц</h1>
+    <div>
+        <select class="form-control" id="monthSelector">
+            <option value="" disabled selected>Выберите месяц</option>
+            @foreach (var month in GetMonths())
+            {
+                <option value="@month">@month</option>
+            }
+        </select>
+    </div>
 </div>
+<div id="statsContainer">
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $('#monthSelector').on('change', function (e) {
+        const valueSelected = this.value;
+        $.get("Home/Statistics?date=" + valueSelected, (data) => {
+            $("#statsContainer").html(data);
+        })
+    });
+</script>

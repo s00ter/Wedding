@@ -1,9 +1,8 @@
-﻿namespace Wedding.Web.Models.Service
-{
-    public class ServiceDto
-    {
-        public decimal Price { get; set; }
+﻿namespace Wedding.Web.Models.Service;
 
-        public bool Discounted { get; set; }
-    }
+public class ServiceDto
+{
+    public decimal Price { get; set; }
+
+    public bool Discounted { get; set; }
 }

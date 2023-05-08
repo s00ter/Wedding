@@ -1,0 +1,28 @@
+﻿<div class="modal" id="orderDetailsModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div id="orderDetailsModalBody" style="width: 700px; height: 500px;" class="modal-content">
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+    <div class="table-wrapper">
+        <div id="table-container">
+
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+const loadAndUpdateData = () => {
+    $.get("/Order/Table", function(data) {
+        $("#table-container").html(data)
+    })
+}
+
+$(document).ready(() => loadAndUpdateData())
+
+</script>

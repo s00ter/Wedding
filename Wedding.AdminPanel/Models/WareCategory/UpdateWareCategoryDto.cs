@@ -1,11 +1,10 @@
-﻿namespace Wedding.AdminPanel.Models.WareCategory
+﻿namespace Wedding.AdminPanel.Models.WareCategory;
+
+public class UpdateWareCategoryDto
 {
-    public class UpdateWareCategoryDto
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public IFormFile File { get; set; }
-    }
+    public IFormFile File { get; set; }
 }

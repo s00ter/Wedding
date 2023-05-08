@@ -1,7 +1,6 @@
-﻿namespace Wedding.Web.Models.Order
+﻿namespace Wedding.Web.Models.Order;
+
+public class RemoveOrder
 {
-    public class RemoveOrder
-    {
-        public string UserId { get; set; }
-    }
+    public string UserId { get; set; }
 }

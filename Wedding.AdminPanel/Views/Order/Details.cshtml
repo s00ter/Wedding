@@ -1,0 +1,25 @@
+﻿@model List<Wedding.AdminPanel.Models.Order.OrderItemDto>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Наименование</th>
+        <th>Кол-во</th>
+        <th>Всего</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>Всего к оплате: @Model.Sum(w => w.Total)</p>
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="onOrderDetailsModalClose()">Отмена</button>

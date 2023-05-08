@@ -5,93 +5,92 @@ using Wedding.DAL.Data.Entities.Enums;
 using Wedding.DAL.Repository.Abstractions;
 using Wedding.Web.Models.Order;
 
-namespace Wedding.Web.Controllers
+namespace Wedding.Web.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class OrderController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class OrderController : ControllerBase
+    private readonly IOrderRepository _orderRepository;
+    private readonly IWareRepository _wareRepository;
+
+    public OrderController(IOrderRepository orderRepository,
+        IWareRepository wareRepository)
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IWareRepository _wareRepository;
+        _orderRepository = orderRepository;
+        _wareRepository = wareRepository;
+    }
 
-        public OrderController(IOrderRepository orderRepository,
-            IWareRepository wareRepository)
+    [HttpGet]
+    public async Task<IActionResult> GetOrders()
+    {
+        var items = await _orderRepository.GetAllAsync();
+
+        return Ok(items);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var item = await _orderRepository.GetByIdAsync(id);
+
+        if (item == null)
         {
-            _orderRepository = orderRepository;
-            _wareRepository = wareRepository;
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetOrders()
-        {
-            var items = await _orderRepository.GetAllAsync();
+        return Ok(item);
+    }
 
-            return Ok(items);
-        }
+    [HttpPost]
+    public async Task<IActionResult> Add(OrderDto body)
+    {
+        var ids = body.OrderItems
+            .Select(i => i.WareId)
+            .ToList();
 
-        [HttpGet]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var item = await _orderRepository.GetByIdAsync(id);
+        var ware = await _wareRepository.GetQuery()
+            .Where(r => ids.Contains(r.Id))
+            .ToListAsync();
 
-            if (item == null)
+        var wares = ware
+            .Select(t => new OrderWare
             {
-                return NotFound();
-            }
+                Total = t.RetailPrice * body.OrderItems.First(i => i.WareId == t.Id).Quantity,
+                Count = body.OrderItems.First(i => i.WareId == t.Id).Quantity,
+                WareId = t.Id
+            })
+            .ToList();
 
-            return Ok(item);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Add(OrderDto body)
+        var item = new Order
         {
-            var ids = body.OrderItems
-                .Select(i => i.WareId)
-                .ToList();
+            Phone = body.Phone,
+            PaymentMethod = body.Phone,
+            OrderWares = wares,
+            Total = wares.Sum(t => t.Total),
+            Status = OrderStatus.New
+        };
 
-            var ware = await _wareRepository.GetQuery()
-                .Where(r => ids.Contains(r.Id))
-                .ToListAsync();
+        await _orderRepository.Create(item);
 
-            var wares = ware
-                .Select(t => new OrderWare
-                {
-                    Total = t.RetailPrice * body.OrderItems.First(i => i.WareId == t.Id).Quantity,
-                    Count = body.OrderItems.First(i => i.WareId == t.Id).Quantity,
-                    WareId = t.Id
-                })
-                .ToList();
+        return Ok();
+    }
 
-            var item = new Order
-            {
-                Phone = body.Phone,
-                PaymentMethod = body.Phone,
-                OrderWares = wares,
-                Total = wares.Sum(t => t.Total),
-                Status = OrderStatus.New
-            };
+    [HttpDelete]
+    public async Task<IActionResult> DeleteById(Guid id)
+    {
+        var entity = await _orderRepository.GetByIdAsync(id);
 
-            await _orderRepository.Create(item);
+        await _orderRepository.Delete(entity);
 
-            return Ok();
-        }
+        return Ok();
+    }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteById(Guid id)
-        {
-            var entity = await _orderRepository.GetByIdAsync(id);
+    [HttpPut]
+    public async Task<IActionResult> Update(Order item)
+    {
+        await _orderRepository.Update(item);
 
-            await _orderRepository.Delete(entity);
-
-            return Ok();
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Update(Order item)
-        {
-            await _orderRepository.Update(item);
-
-            return Ok();
-        }
+        return Ok();
     }
 }

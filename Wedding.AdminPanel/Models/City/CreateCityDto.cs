@@ -1,7 +1,6 @@
-﻿namespace Wedding.AdminPanel.Models.City
+﻿namespace Wedding.AdminPanel.Models.City;
+
+public class CreateCityDto
 {
-    public class CreateCityDto
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

@@ -1,13 +1,12 @@
-﻿namespace Wedding.AdminPanel.Models.Salon
+﻿namespace Wedding.AdminPanel.Models.Salon;
+
+public class UpdateSalonDto
 {
-    public class UpdateSalonDto
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Address { get; set; }
+    public string Address { get; set; }
 
-        public int CityId { get; set; }
+    public int CityId { get; set; }
 
-        public IFormFile File { get; set; }
-    }
+    public IFormFile File { get; set; }
 }
